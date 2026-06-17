@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBF7F0"/>
+      <stop offset="1" stop-color="#F5EEE2"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#D2542A"/>
+      <stop offset="0.55" stop-color="#E27048"/>
+      <stop offset="1" stop-color="#D4A958"/>
+    </linearGradient>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#6E4D29" opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <circle cx="970" cy="170" r="220" fill="#EC966E" opacity="0.18"/>
+  <circle cx="1080" cy="460" r="160" fill="#2F5D54" opacity="0.12"/>
+  <path d="M70 540 Q300 380 540 470 T980 360 T1180 470" stroke="url(#accent)" stroke-width="3" fill="none" stroke-dasharray="10 8" opacity="0.5"/>
+  <g transform="translate(110 230)">
+    <rect width="80" height="80" rx="18" fill="url(#accent)"/>
+    <path d="M16 60 L16 26 L26 26 L26 50 L46 26 L54 26 L36 50 L60 60 L48 60 L32 46 L26 52 L26 60 Z" fill="#FBF7F0"/>
+    <circle cx="62" cy="30" r="5" fill="#2F5D54"/>
+  </g>
+  <text x="110" y="380" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="68" font-weight="800" fill="#162435">Artouris</text>
+  <text x="112" y="430" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="26" font-weight="600" fill="#D2542A">Plan authentic trips with AI.</text>
+  <text x="112" y="478" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="400" fill="#4E371D">One prompt. One intelligent journey. Starting in Morocco, built for the world.</text>
+</svg>
