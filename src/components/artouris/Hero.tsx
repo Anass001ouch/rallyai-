@@ -16,6 +16,7 @@ import { MoroccanPattern } from "./MoroccanPattern";
 import { ItineraryPreview, RouteMiniMap, DEFAULT_ITINERARY } from "./ItineraryPreview";
 import { PROMPT_CHIPS } from "@/lib/artouris/content";
 import { cn } from "@/lib/utils";
+import { VisualSuggestionMap } from "./VisualSuggestionMap";
 
 const PLACEHOLDER =
   "Try: I want a 5-day Morocco trip with desert, local food, culture, and a medium budget…";
@@ -64,15 +65,18 @@ export function Hero({ onPromptSubmit }: HeroProps) {
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden bg-sand-50 pt-24 sm:pt-28 lg:pt-32"
+      className="relative isolate overflow-hidden bg-sand-50 bg-grid-sand pt-24 sm:pt-28 lg:pt-36"
     >
       {/* Background layers */}
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-sand-50 via-sand-50 to-sand-100/70" />
-        <MoroccanPattern variant="rings" className="opacity-60" />
-        <div className="absolute -top-32 -right-20 h-[420px] w-[420px] rounded-full bg-terracotta-200/40 blur-3xl" />
-        <div className="absolute top-40 -left-24 h-[380px] w-[380px] rounded-full bg-gold-300/30 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-[260px] w-[420px] rounded-full bg-tile-green/15 blur-3xl" />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-[#FDFBF7]">
+        {/* Very faint background image texture */}
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-[0.03]"></div>
+        
+        {/* Top Right glowing orb */}
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-[#B25A2A]/5 rounded-bl-[100%] blur-3xl"></div>
+        
+        {/* Bottom Left glowing orb */}
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-[#1F3F49]/5 rounded-tr-[100%] blur-3xl"></div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -95,10 +99,9 @@ export function Hero({ onPromptSubmit }: HeroProps) {
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-6 max-w-4xl text-center font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-navy-800 text-balance sm:text-5xl lg:text-[4.2rem] lg:leading-[1.02]"
+          className="mx-auto mt-8 max-w-4xl text-center font-display text-5xl font-black leading-[1.05] tracking-tight text-navy-900 text-balance sm:text-6xl lg:text-[4.5rem] lg:leading-[1.02]"
         >
-          Plan your Moroccan trip{" "}
-          <span className="gradient-text-sunset">with AI.</span>
+          A <span className="text-terracotta-500">Smarter Way</span> To Plan Your Next Trip.
         </motion.h1>
 
         {/* Subheadline */}
@@ -106,11 +109,9 @@ export function Hero({ onPromptSubmit }: HeroProps) {
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-navy-600 text-pretty sm:text-lg"
+          className="mx-auto mt-6 max-w-2xl text-center text-lg leading-relaxed text-navy-600 text-pretty sm:text-xl"
         >
-          Describe the experience you want in one prompt. Artouris turns it into a
-          personalized itinerary with authentic places, local experiences, and smart
-          travel recommendations.
+          Discover authentic Moroccan experiences and generate a personalized itinerary instantly with AI.
         </motion.p>
 
         {/* Prompt box */}
@@ -119,13 +120,12 @@ export function Hero({ onPromptSubmit }: HeroProps) {
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-8 w-full max-w-3xl"
+          className="mx-auto mt-10 w-full max-w-[800px]"
         >
-          <div className="relative rounded-[28px] bg-white/90 p-2.5 shadow-hero-glow ring-1 ring-sand-200 backdrop-blur">
-            <div className="absolute inset-0 -z-10 rounded-[28px] bg-gradient-to-br from-terracotta-100/60 via-transparent to-gold-300/40 blur-xl" />
-            <div className="flex flex-col gap-2.5 rounded-[22px] bg-white p-3.5 ring-1 ring-sand-100">
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/50">
+            <div className="flex flex-col gap-2">
               <div className="flex items-start gap-3">
-                <span className="mt-2.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-terracotta-500 to-gold-400 text-white shadow-sm">
+                <span className="mt-2.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-terracotta-50 text-terracotta-500">
                   <Sparkles className="h-4 w-4" />
                 </span>
                 <textarea
@@ -139,9 +139,10 @@ export function Hero({ onPromptSubmit }: HeroProps) {
                     }
                   }}
                   rows={2}
+                  autoFocus
                   aria-label="Describe your trip"
                   placeholder={PLACEHOLDER}
-                  className="min-h-[58px] flex-1 resize-none bg-transparent pt-2 text-[15px] leading-relaxed text-navy-800 placeholder:text-navy-400 focus:outline-none scrollbar-thin"
+                  className="min-h-[64px] flex-1 resize-none bg-transparent pt-2.5 text-lg leading-relaxed text-navy-900 placeholder:text-navy-300 focus:outline-none scrollbar-thin"
                 />
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-sand-100 pt-3">
@@ -175,8 +176,19 @@ export function Hero({ onPromptSubmit }: HeroProps) {
             </div>
           </div>
 
-          {/* Prompt chips */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          {/* Interactive visual map suggestion when typing */}
+          <div className="mt-4 mx-auto w-full max-w-2xl">
+            <VisualSuggestionMap prompt={value} />
+          </div>
+
+          {/* Prompt chips - hide when typing significantly */}
+          {value.trim().length <= 5 && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="mt-4 flex flex-wrap items-center justify-center gap-2"
+            >
             <span className="text-xs font-medium text-navy-500">Try:</span>
             {PROMPT_CHIPS.map((chip) => (
               <button
@@ -189,7 +201,8 @@ export function Hero({ onPromptSubmit }: HeroProps) {
                 {chip}
               </button>
             ))}
-          </div>
+          </motion.div>
+          )}
         </motion.div>
 
         {/* Secondary CTAs */}
