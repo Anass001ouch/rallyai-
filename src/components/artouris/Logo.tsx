@@ -10,9 +10,9 @@ interface LogoProps {
 }
 
 const sizeMap = {
-  sm: { box: "h-7 w-7", text: "text-lg" },
-  md: { box: "h-9 w-9", text: "text-xl" },
-  lg: { box: "h-11 w-11", text: "text-2xl" },
+  sm: { icon: "h-6 w-auto", text: "text-lg" },
+  md: { icon: "h-8 w-auto", text: "text-2xl" },
+  lg: { icon: "h-11 w-auto", text: "text-3xl" },
 };
 
 export function Logo({ className, showWordmark = true, size = "md" }: LogoProps) {
@@ -22,38 +22,39 @@ export function Logo({ className, showWordmark = true, size = "md" }: LogoProps)
       href="/"
       aria-label="Artouris — home"
       className={cn(
-        "group inline-flex items-center gap-2.5 select-none",
+        "group inline-flex items-center gap-3 select-none",
         className
       )}
     >
-      <span
-        className={cn(
-          "relative inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-terracotta-500 via-terracotta-400 to-gold-400 shadow-sm ring-1 ring-terracotta-600/20 transition-transform group-hover:scale-[1.03]",
-          s.box
-        )}
-      >
+      <div className="relative flex items-center justify-center transition-transform group-hover:scale-[1.03]">
         <svg
-          viewBox="0 0 32 32"
+          viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="h-[58%] w-[58%]"
+          className={cn("text-terracotta-600", s.icon)}
           aria-hidden="true"
         >
           <path
-            d="M5 24 L5 8 L9 8 L9 18 L18 8 L23 8 L13 18 L23 24 L17 24 L10 17 L9 19 L9 24 Z"
-            fill="#FBF7F0"
+            d="M 10 90 L 50 10 L 90 90 L 65 90 L 50 60 L 35 90 Z"
+            fill="currentColor"
+            stroke="currentColor"
+            strokeWidth="4"
+            strokeLinejoin="round"
           />
-          <circle cx="25" cy="11" r="2.6" fill="#2F5D54" />
         </svg>
-      </span>
+      </div>
       {showWordmark && (
         <span
           className={cn(
-            "font-display font-extrabold tracking-tight text-navy-800",
+            "font-display font-bold tracking-[-0.04em] text-navy-900 flex items-center",
             s.text
           )}
         >
-          Artouris
+          <svg viewBox="0 0 24 24" className="h-[0.75em] w-auto mr-[0.03em] translate-y-[-0.05em]" fill="currentColor">
+            <polygon points="2,22 5.5,22 11.5,4 8,4" className="text-terracotta-500/80" fill="currentColor" />
+            <polygon points="12.5,4 16,4 22,22 18.5,22" />
+          </svg>
+          rtouris
         </span>
       )}
     </Link>
