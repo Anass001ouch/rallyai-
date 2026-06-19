@@ -19,7 +19,7 @@ export function Logo({ className, showWordmark = true, size = "md" }: LogoProps)
   const s = sizeMap[size];
   return (
     <Link
-      href="#top"
+      href="/"
       aria-label="Artouris — home"
       className={cn(
         "group inline-flex items-center gap-2.5 select-none",

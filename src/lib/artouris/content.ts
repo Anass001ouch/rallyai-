@@ -2,12 +2,11 @@
 // Keeping copy in one place makes it easy to edit later.
 
 export const NAV_LINKS = [
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Explore Morocco", href: "#explore" },
-  { label: "For travelers", href: "#for-travelers" },
-  { label: "For locals", href: "#for-businesses" },
-  { label: "Intelligence", href: "#intelligence" },
-  { label: "Why Artouris", href: "#why" },
+  { label: "Explore", href: "/explore" },
+  { label: "Book", href: "/book" },
+  { label: "AI Planner", href: "/ai-planner" },
+  { label: "Shop", href: "/shop" },
+  { label: "Providers", href: "/provider-preview" },
 ];
 
 export const PROMPT_CHIPS = [

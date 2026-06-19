@@ -1,397 +1,126 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import {
-  ArrowRight,
-  Sparkles,
-  MapPin,
-  Calendar,
-  Wand2,
-  Globe2,
-  Loader2,
-} from "lucide-react";
-import { CTAButton } from "./CTAButton";
-import { MoroccanPattern } from "./MoroccanPattern";
-import { ItineraryPreview, RouteMiniMap, DEFAULT_ITINERARY } from "./ItineraryPreview";
-import { PROMPT_CHIPS } from "@/lib/artouris/content";
-import { cn } from "@/lib/utils";
-import { VisualSuggestionMap } from "./VisualSuggestionMap";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { HeroNavbar } from "./HeroNavbar";
+import { HeroChips } from "./HeroChips";
 
 const PLACEHOLDER =
-  "Try: I want a 5-day Morocco trip with desert, local food, culture, and a medium budget…";
+  "Describe your dream trip, e.g. '3 days in Merzouga with camel riding, desert camp, vegetarian food, and local souvenirs'";
 
-interface HeroProps {
-  onPromptSubmit?: (prompt: string) => void;
-}
+export function Hero() {
+  const router = useRouter();
+  const [prompt, setPrompt] = useState("");
 
-export function Hero({ onPromptSubmit }: HeroProps) {
-  const [value, setValue] = useState("");
-  const [generating, setGenerating] = useState(false);
-  const [generated, setGenerated] = useState(false);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const reduce = useReducedMotion();
-
-  const submit = (prompt?: string) => {
-    const finalPrompt = (prompt ?? value).trim();
-    if (!finalPrompt) {
-      inputRef.current?.focus();
-      return;
+  const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    const trimmed = prompt.trim();
+    if (trimmed) {
+      router.push(`/ai-planner?prompt=${encodeURIComponent(trimmed)}`);
+    } else {
+      router.push("/ai-planner");
     }
-    if (prompt) setValue(prompt);
-    setGenerating(true);
-    setGenerated(false);
-    onPromptSubmit?.(prompt ?? value);
-    // Simulate AI generation
-    window.setTimeout(() => {
-      setGenerating(false);
-      setGenerated(true);
-    }, 1100);
   };
-
-  const handleChip = (chip: string) => {
-    setValue(`Plan a ${chip.toLowerCase()} trip in Morocco.`);
-    submit(`Plan a ${chip.toLowerCase()} trip in Morocco.`);
-  };
-
-  // Auto-grow textarea
-  useEffect(() => {
-    const el = inputRef.current;
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = Math.min(el.scrollHeight, 200) + "px";
-  }, [value]);
 
   return (
-    <section
-      id="top"
-      className="relative isolate overflow-hidden bg-sand-50 bg-grid-sand pt-24 sm:pt-28 lg:pt-36"
-    >
-      {/* Background layers */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-[#FDFBF7]">
-        {/* Very faint background image texture */}
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-[0.03]"></div>
-        
-        {/* Top Right glowing orb */}
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-[#B25A2A]/5 rounded-bl-[100%] blur-3xl"></div>
-        
-        {/* Bottom Left glowing orb */}
-        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-[#1F3F49]/5 rounded-tr-[100%] blur-3xl"></div>
+    <section className="relative isolate w-full min-h-[760px] lg:min-h-screen flex flex-col overflow-hidden bg-navy-900">
+      {/* Immersive background image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/images/sahara/regions/merzouga-dunes.png"
+          alt="Moroccan Sahara dunes"
+          className="w-full h-full object-cover scale-105 opacity-70"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/55 to-navy-900/30" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-terracotta-500/20 rounded-full blur-[120px]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Announcement pill */}
-        <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
+      {/* Floating premium navbar */}
+      <HeroNavbar />
+
+      {/* Central content */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center items-center px-4 sm:px-6 mt-10 pb-32 sm:pb-40">
+        {/* Eyebrow */}
+        <motion.span
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto flex w-fit items-center gap-2 rounded-full border border-terracotta-200 bg-white/70 px-3.5 py-1.5 text-xs font-semibold text-terracotta-700 backdrop-blur-sm shadow-sm"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-sand-100 text-[11px] font-bold uppercase tracking-[0.18em] backdrop-blur-md mb-6"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-terracotta-400 opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-terracotta-500" />
-          </span>
-          Launching first in Morocco · Built to scale worldwide
-        </motion.div>
+          <Sparkles className="w-3 h-3 text-gold-300" /> AI travel agent · Morocco-first
+        </motion.span>
 
         {/* Headline */}
         <motion.h1
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-8 max-w-4xl text-center font-display text-5xl font-black leading-[1.05] tracking-tight text-navy-900 text-balance sm:text-6xl lg:text-[4.5rem] lg:leading-[1.02]"
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="text-center font-display text-5xl sm:text-6xl lg:text-[76px] font-black text-white tracking-tight drop-shadow-2xl max-w-4xl leading-[1.05]"
         >
-          A <span className="text-terracotta-500">Smarter Way</span> To Plan Your Next Trip.
+          Your AI Travel Agent For{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-terracotta-400 via-gold-400 to-terracotta-300">
+            Morocco
+          </span>
+          .
         </motion.h1>
 
         {/* Subheadline */}
         <motion.p
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-6 max-w-2xl text-center text-lg leading-relaxed text-navy-600 text-pretty sm:text-xl"
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="mt-6 max-w-2xl mx-auto text-center text-base sm:text-lg lg:text-xl text-sand-100 drop-shadow-md font-medium leading-relaxed"
         >
-          Discover authentic Moroccan experiences and generate a personalized itinerary instantly with AI.
+          Describe the experience you want to live. Artouris builds your route, stays,
+          activities, transport, and budget — then lets you book everything in one place.
         </motion.p>
 
-        {/* Prompt box */}
+        {/* Glass prompt box */}
         <motion.div
-          id="hero-prompt"
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-10 w-full max-w-[800px]"
+          transition={{ duration: 0.8, delay: 0.35 }}
+          className="w-full max-w-[920px] mx-auto mt-10 relative"
         >
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/50">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-start gap-3">
-                <span className="mt-2.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-terracotta-50 text-terracotta-500">
-                  <Sparkles className="h-4 w-4" />
-                </span>
-                <textarea
-                  ref={inputRef}
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      submit();
-                    }
-                  }}
-                  rows={2}
-                  autoFocus
-                  aria-label="Describe your trip"
-                  placeholder={PLACEHOLDER}
-                  className="min-h-[64px] flex-1 resize-none bg-transparent pt-2.5 text-lg leading-relaxed text-navy-900 placeholder:text-navy-300 focus:outline-none scrollbar-thin"
-                />
-              </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-sand-100 pt-3">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="inline-flex items-center gap-1 rounded-md bg-sand-100 px-2 py-1 text-[11px] font-medium text-navy-600">
-                    <Globe2 className="h-3 w-3" /> Morocco
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-md bg-sand-100 px-2 py-1 text-[11px] font-medium text-navy-600">
-                    <Calendar className="h-3 w-3" /> 5 days
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-md bg-sand-100 px-2 py-1 text-[11px] font-medium text-navy-600">
-                    <MapPin className="h-3 w-3" /> Desert + culture
-                  </span>
-                </div>
-                <CTAButton
-                  size="md"
-                  onClick={() => submit()}
-                  className="min-w-[150px]"
-                  icon={
-                    generating ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Wand2 className="h-4 w-4" />
-                    )
-                  }
-                  iconPosition="left"
-                >
-                  {generating ? "Generating…" : "Generate trip"}
-                </CTAButton>
-              </div>
+          <div className="absolute -inset-2 bg-gradient-to-r from-terracotta-500/30 to-gold-400/30 rounded-[32px] blur-2xl opacity-50" />
+          <form
+            onSubmit={handleSubmit}
+            className="relative bg-white/10 backdrop-blur-xl border border-white/20 p-2 sm:p-3 rounded-[28px] shadow-2xl flex flex-col sm:flex-row items-center gap-2 sm:gap-3 group focus-within:bg-white/15 transition-all"
+          >
+            <div className="flex-1 w-full pl-4 sm:pl-6 py-2 sm:py-3 flex items-center gap-3">
+              <Sparkles className="w-5 h-5 text-gold-300 shrink-0" />
+              <input
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder={PLACEHOLDER}
+                className="w-full bg-transparent border-0 focus:outline-none text-white placeholder:text-white/70 text-base sm:text-lg font-medium resize-none"
+              />
             </div>
-          </div>
-
-          {/* Interactive visual map suggestion when typing */}
-          <div className="mt-4 mx-auto w-full max-w-2xl">
-            <VisualSuggestionMap prompt={value} />
-          </div>
-
-          {/* Prompt chips - hide when typing significantly */}
-          {value.trim().length <= 5 && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="mt-4 flex flex-wrap items-center justify-center gap-2"
+            <Button
+              type="submit"
+              className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-7 rounded-full bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold text-base sm:text-lg shadow-lg flex items-center justify-center shrink-0"
             >
-            <span className="text-xs font-medium text-navy-500">Try:</span>
-            {PROMPT_CHIPS.map((chip) => (
-              <button
-                key={chip}
-                type="button"
-                onClick={() => handleChip(chip)}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-sand-200 bg-white/80 px-3 py-1.5 text-xs font-medium text-navy-700 shadow-sm backdrop-blur transition hover:border-terracotta-300 hover:bg-terracotta-50 hover:text-terracotta-700"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-terracotta-400 transition group-hover:bg-terracotta-500" />
-                {chip}
-              </button>
-            ))}
-          </motion.div>
-          )}
+              Plan my trip <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </form>
         </motion.div>
 
-        {/* Secondary CTAs */}
+        {/* Action + category chips */}
         <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-7 flex flex-wrap items-center justify-center gap-3"
-        >
-          <CTAButton href="#hero-prompt" size="lg">
-            Plan my trip
-          </CTAButton>
-          <CTAButton href="#demo" size="lg" variant="secondary" icon={null}>
-            See example trip
-          </CTAButton>
-        </motion.div>
-
-        <p className="mt-4 text-center text-xs text-navy-500">
-          No complex filters. No endless tabs. Just describe the experience you want.
-        </p>
-
-        {/* Itinerary preview card */}
-        <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto mt-14 w-full max-w-6xl"
-        >
-          <PreviewCard generating={generating} generated={generated} prompt={value} />
-        </motion.div>
-
-        {/* Trust bar */}
-        <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0 }}
+          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.7 }}
-          className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center text-xs text-navy-500"
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-10"
         >
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-tile-green" />
-            Privacy-conscious
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-terracotta-500" />
-            Anonymized insights
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-gold-500" />
-            Local-business-first
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-tile-blue" />
-            Multilingual
-          </span>
+          <HeroChips onPromptPrefill={setPrompt} />
         </motion.div>
       </div>
 
-      {/* Bottom fade */}
-      <div className="pointer-events-none mt-16 h-px w-full bg-gradient-to-r from-transparent via-sand-200 to-transparent" />
+      {/* Bottom fade transition into the sand sections */}
+      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-b from-transparent via-[#f7f1e8]/70 to-[#f7f1e8] pointer-events-none z-20" />
     </section>
-  );
-}
-
-function PreviewCard({
-  generating,
-  generated,
-  prompt,
-}: {
-  generating: boolean;
-  generated: boolean;
-  prompt: string;
-}) {
-  const reduce = useReducedMotion();
-  return (
-    <div className="relative overflow-hidden rounded-[28px] bg-white shadow-hero-glow ring-1 ring-sand-200">
-      {/* Top bar */}
-      <div className="flex items-center justify-between gap-3 border-b border-sand-100 bg-sand-50/70 px-5 py-3">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-terracotta-500 to-gold-400 text-white">
-            <Sparkles className="h-3.5 w-3.5" />
-          </span>
-          <span className="text-sm font-semibold text-navy-800">Artouris AI · Itinerary preview</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-sand-300" />
-          <span className="h-2.5 w-2.5 rounded-full bg-sand-300" />
-          <span className="h-2.5 w-2.5 rounded-full bg-terracotta-300" />
-        </div>
-      </div>
-
-      <div className="grid gap-0 lg:grid-cols-[1.05fr_1fr]">
-        {/* Left: itinerary */}
-        <div className="border-b border-sand-100 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-terracotta-600">
-                Personalized itinerary
-              </p>
-              <h3 className="mt-1 font-display text-lg font-bold text-navy-800 sm:text-xl">
-                5-day Morocco · Desert, culture, local food
-              </h3>
-            </div>
-            <span className="hidden sm:inline-flex shrink-0 items-center gap-1 rounded-full bg-tile-green/10 px-2.5 py-1 text-[11px] font-semibold text-tile-green">
-              Medium budget
-            </span>
-          </div>
-
-          <div className="mt-5 min-h-[260px]">
-            {generating ? (
-              <GeneratingSkeleton />
-            ) : (
-              <ItineraryPreview animated={!reduce} />
-            )}
-          </div>
-        </div>
-
-        {/* Right: route + meta */}
-        <div className="bg-gradient-to-br from-sand-50/70 to-white p-5 sm:p-7">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-navy-500">
-            Recommended route
-          </p>
-          <RouteMiniMap className="mt-3 aspect-[2/1]" />
-
-          <div className="mt-5 grid grid-cols-2 gap-3">
-            <MetaCard label="Estimated duration" value="7 days" sub="Adjustable" />
-            <MetaCard label="Travel style" value="Culture + desert" sub="Authentic" />
-            <MetaCard label="Budget level" value="Medium" sub="Per traveler" />
-            <MetaCard label="Best for" value="First-time visitors" sub="Slow-paced" />
-          </div>
-
-          <div className="mt-5 rounded-2xl border border-sand-200 bg-white p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-navy-500">
-              You asked
-            </p>
-            <p className="mt-1 text-sm italic leading-relaxed text-navy-700">
-              {prompt?.trim()
-                ? `“${prompt.trim()}”`
-                : "“I want a 5-day authentic Morocco trip with desert, local food, culture, and a medium budget.”"}
-            </p>
-          </div>
-
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-1.5 text-xs text-navy-500">
-              <Sparkles className="h-3.5 w-3.5 text-terracotta-500" />
-              {generating
-                ? "Artouris is composing your trip…"
-                : generated
-                ? "Itinerary ready — refine in conversation"
-                : "Sample preview — try your own prompt above"}
-            </span>
-            <CTAButton href="#demo" size="sm" variant="outline" icon={<ArrowRight className="h-3.5 w-3.5" />}>
-              Open demo
-            </CTAButton>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MetaCard({ label, value, sub }: { label: string; value: string; sub: string }) {
-  return (
-    <div className="rounded-xl border border-sand-200 bg-white px-3 py-2.5">
-      <p className="text-[10px] font-medium uppercase tracking-wider text-navy-400">{label}</p>
-      <p className="mt-0.5 text-sm font-bold text-navy-800">{value}</p>
-      <p className="text-[11px] text-navy-500">{sub}</p>
-    </div>
-  );
-}
-
-function GeneratingSkeleton() {
-  return (
-    <ol className="flex flex-col gap-4">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <li key={i} className="flex items-start gap-3.5">
-          <div className="h-9 w-9 shrink-0 rounded-full bg-sand-100 ring-2 ring-white" />
-          <div className="flex-1 space-y-2 pt-1">
-            <div className="h-3 w-20 rounded-full bg-sand-100" />
-            <div className="h-3.5 w-3/4 rounded-full bg-sand-100" />
-            <div className="h-3 w-full rounded-full bg-sand-50" />
-          </div>
-        </li>
-      ))}
-      <div className="absolute inset-0 -z-10 flex items-center justify-center">
-        <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-medium text-terracotta-700 shadow-sm ring-1 ring-terracotta-200 backdrop-blur">
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          Composing itinerary…
-        </span>
-      </div>
-    </ol>
   );
 }
