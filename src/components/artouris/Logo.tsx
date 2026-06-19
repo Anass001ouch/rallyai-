@@ -35,7 +35,7 @@ export function Logo({ className, showWordmark = true, size = "md" }: LogoProps)
           aria-hidden="true"
         >
           <path
-            d="M 10 90 L 50 10 L 90 90 L 65 90 L 50 60 L 35 90 Z"
+            d="M 10 90 L 50 10 L 90 90 L 78 90 L 50 34 L 22 90 Z"
             fill="currentColor"
             stroke="currentColor"
             strokeWidth="4"
