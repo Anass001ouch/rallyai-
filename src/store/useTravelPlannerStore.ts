@@ -301,14 +301,14 @@ export const useTravelPlannerStore = create<TravelPlannerState>((set, get) => ({
       case 'ASK_DURATION': {
         const d = parseDuration(answer);
         if (d) {
-          set({ tripDuration: d, currentStep: 'ASK_BUDGET' });
+          set({ tripDuration: d });
         }
         return;
       }
       case 'ASK_BUDGET': {
         const b = parseBudget(answer);
         if (b) {
-          set({ budget: b, currentStep: 'ASK_PREFERENCES' });
+          set({ budget: b });
         }
         return;
       }
@@ -324,7 +324,6 @@ export const useTravelPlannerStore = create<TravelPlannerState>((set, get) => ({
           familyFlag: tags.family,
           budgetFlag: tags.budget,
           vegetarianFlag: tags.vegetarian,
-          currentStep: 'SUGGEST_DESTINATION',
         });
         return;
       }
