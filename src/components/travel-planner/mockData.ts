@@ -962,17 +962,26 @@ export const MOCK_DATA = {
     fairScore: p.fairVisibilityScore,
     badges: p.badges
   })),
-  souvenirs: souvenirProducts.map(p => ({
-    id: p.id,
-    title: p.name,
-    desc: p.description,
-    price: `${p.price} ${p.currency}`,
-    rating: p.rating,
-    coordinates: [31.0802, -4.0144], 
-    image: p.image,
-    fairScore: 98,
-    badges: p.badges
-  })),
+  souvenirs: souvenirProducts.map((p, idx) => {
+    // Generate a slight jitter so markers don't overlap perfectly
+    // We use a predefined pattern to make it look like a marketplace
+    const row = Math.floor(idx / 3);
+    const col = idx % 3;
+    const latOffset = (row * 0.004) - 0.006;
+    const lngOffset = (col * 0.005) - 0.005;
+
+    return {
+      id: p.id,
+      title: p.name,
+      desc: p.description,
+      price: `${p.price} ${p.currency}`,
+      rating: p.rating,
+      coordinates: [31.0802 + latOffset, -4.0144 + lngOffset], 
+      image: p.image,
+      fairScore: 98,
+      badges: p.badges
+    };
+  }),
   itinerary: {
     title: merzougaFinalItinerary.title,
     budget: {
