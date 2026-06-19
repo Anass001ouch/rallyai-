@@ -520,6 +520,60 @@ export const souvenirProducts = [
     stock: 30,
     canShip: true,
     aiMatchTags: ["dates", "food", "gift", "tafilalet", "local"]
+  },
+  {
+    id: "product-007",
+    name: "Moroccan Argan Oil",
+    category: "Beauty & Wellness",
+    region: "Souss-Massa",
+    artisanName: "Argan Women's Cooperative",
+    price: 250,
+    currency: "MAD",
+    rating: 4.9,
+    reviewCount: 210,
+    image: "/images/sahara/shop/moroccan-argan-oil.png",
+    badges: ["Organic", "Women's Coop", "Fair Trade"],
+    description:
+      "Premium, cold-pressed 100% organic Argan oil. Perfect for skin and hair nourishment.",
+    stock: 50,
+    canShip: true,
+    aiMatchTags: ["argan", "oil", "beauty", "gift", "organic"]
+  },
+  {
+    id: "product-008",
+    name: "Sahara Sand Bottle",
+    category: "Decor & Memories",
+    region: "Merzouga",
+    artisanName: "Nomad Glassworks",
+    price: 80,
+    currency: "MAD",
+    rating: 4.6,
+    reviewCount: 115,
+    image: "/images/sahara/shop/sahara-sand-bottle.png",
+    badges: ["Authentic", "Travel Memory", "Handmade"],
+    description:
+      "A small decorative glass bottle filled with fine, vibrant orange sand from the Erg Chebbi dunes.",
+    stock: 40,
+    canShip: true,
+    aiMatchTags: ["sand", "bottle", "decor", "memory", "merzouga"]
+  },
+  {
+    id: "product-009",
+    name: "Handwoven Amazigh Kilim Rug",
+    category: "Home & Decor",
+    region: "Atlas Mountains",
+    artisanName: "Atlas Weavers Guild",
+    price: 1500,
+    currency: "MAD",
+    rating: 5.0,
+    reviewCount: 42,
+    image: "/images/sahara/shop/amazigh-kilim-rug.png",
+    badges: ["Handwoven", "Authentic", "Premium"],
+    description:
+      "A stunning, handwoven Kilim rug featuring traditional geometric Amazigh patterns in vibrant red.",
+    stock: 5,
+    canShip: true,
+    aiMatchTags: ["rug", "kilim", "amazigh", "decor", "premium", "home"]
   }
 ];
 

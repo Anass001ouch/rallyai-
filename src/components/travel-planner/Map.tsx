@@ -223,8 +223,16 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
         
         let emoji = "📍";
         if (marker.type === "stay" || marker.type === "hotel") emoji = "🏕️";
-        else if (marker.type === "activity") emoji = "🐪";
-        else if (marker.type === "shop") emoji = "🧣";
+        else if (marker.type === "activity") {
+          const title = marker.title?.toLowerCase() || "";
+          if (title.includes("atv") || title.includes("buggy") || title.includes("4x4") || title.includes("quad")) emoji = "🏍️";
+          else if (title.includes("sandboard") || title.includes("board")) emoji = "🏂";
+          else if (title.includes("stargaz") || title.includes("star")) emoji = "🌌";
+          else if (title.includes("dinner") || title.includes("food") || title.includes("tea") || title.includes("breakfast")) emoji = "🍽️";
+          else if (title.includes("music") || title.includes("nomad") || title.includes("culture")) emoji = "🪘";
+          else emoji = "🐪";
+        }
+        else if (marker.type === "shop") emoji = "🛍️";
         else if (marker.type === "transport") emoji = "🚐";
         else if (marker.title?.includes("Merzouga") || marker.title?.includes("Zagora") || marker.title?.includes("Agafay")) emoji = "🏜️";
 
