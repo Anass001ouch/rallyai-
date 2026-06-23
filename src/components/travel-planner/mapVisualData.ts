@@ -61,11 +61,11 @@ export const mapZones = [
 
 // Map filter categories
 export const mapFilters = [
-  { id: "all", label: "All", icon: "🗺️" },
-  { id: "stay", label: "Stays", icon: "🏕️" },
-  { id: "activity", label: "Activities", icon: "🐪" },
-  { id: "shop", label: "Souvenirs", icon: "🧣" },
-  { id: "transport", label: "Transport", icon: "🚐" },
-  { id: "restaurant", label: "Food", icon: "🍽️" },
-  { id: "guide", label: "Guides", icon: "🧭" },
+  { id: "all", label: "All", icon: "🗺️", color: "#0f172a" },
+  { id: "stay", label: "Stays", icon: "🏕️", color: "#d84f2a" },
+  { id: "activity", label: "Activities", icon: "🐪", color: "#e0a84f" },
+  { id: "shop", label: "Souvenirs", icon: "🧣", color: "#8a5cf6" },
+  { id: "transport", label: "Transport", icon: "🚐", color: "#2563eb" },
+  { id: "restaurant", label: "Food", icon: "🍽️", color: "#16a34a" },
+  { id: "guide", label: "Guides", icon: "🧭", color: "#0f172a" },
 ];

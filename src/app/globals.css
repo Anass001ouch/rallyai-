@@ -306,6 +306,117 @@
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Subtle paper / grain noise overlay for premium feel */
+  .bg-noise {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.45  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.3'/></svg>");
+    background-size: 160px 160px;
+  }
+
+  /* 3D Isometric Map Utilities */
+  .isometric-map-container {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+  .isometric-map {
+    transform: rotateX(50deg) rotateZ(-25deg) translateZ(0);
+    box-shadow: 
+      -10px 20px 40px rgba(110, 77, 41, 0.15),
+      -20px 40px 80px rgba(22, 36, 53, 0.1);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s ease;
+  }
+  .isometric-map:hover {
+    transform: rotateX(45deg) rotateZ(-20deg) translateZ(20px);
+    box-shadow: 
+      -15px 30px 50px rgba(110, 77, 41, 0.2),
+      -30px 60px 100px rgba(22, 36, 53, 0.15);
+  }
+
+  /* Premium elevated card */
+  .card-elevated {
+    box-shadow:
+      0 1px 2px rgba(22, 36, 53, 0.04),
+      0 12px 32px rgba(22, 36, 53, 0.06),
+      0 32px 80px -16px rgba(22, 36, 53, 0.12);
+  }
+
+  /* Three-stop Morocco gradient text */
+  .gradient-text-morocco {
+    background: linear-gradient(120deg, #D2542A 0%, #D4A958 50%, #2F5D54 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Soft dividers */
+  .divide-soft > * + * {
+    border-top: 1px solid rgba(110, 77, 41, 0.08);
+  }
+
+  /* Branded leaflet zoom controls */
+  .brand-zoom .leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 6px 18px rgba(22, 36, 53, 0.12) !important;
+    margin: 14px !important;
+  }
+  .brand-zoom .leaflet-control-zoom a {
+    background: #ffffff !important;
+    color: #D2542A !important;
+    border: 1px solid #EBE0CB !important;
+    border-radius: 999px !important;
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 34px !important;
+    font-weight: 800 !important;
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+    transition: all 0.18s ease !important;
+  }
+  .brand-zoom .leaflet-control-zoom a:hover {
+    background: #D2542A !important;
+    color: #ffffff !important;
+    border-color: #D2542A !important;
+  }
+  .brand-zoom .leaflet-control-zoom a:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Pulse ring for live indicators */
+  .pulse-dot {
+    position: relative;
+    display: inline-block;
+  }
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.4;
+    animation: pulseRing 2s ease-out infinite;
+  }
+  @keyframes pulseRing {
+    0% { transform: scale(0.7); opacity: 0.55; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  /* Animated region zone on Leaflet */
+  .leaflet-pulse-zone {
+    animation: zonePulse 4s ease-in-out infinite;
+  }
+  @keyframes zonePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.95; }
+  }
+
+  /* Animated traveling dot for hero map */
+  .traveling-dot {
+    offset-rotate: 0deg;
+    animation: dotMove 6s linear infinite;
+  }
+  @keyframes dotMove {
+    to { offset-distance: 100%; }
+  }
 }
 
 /* Custom focus ring for accessibility */
@@ -384,4 +495,64 @@
 .leaflet-popup-tip {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
 }
+
+/* Warm Moroccan Map Filter */
+.leaflet-layer {
+  filter: sepia(0.3) saturate(1.2) hue-rotate(-10deg) contrast(1.05) brightness(1.02);
+}
+.map-tiles-vintage {
+  filter: sepia(0.4) saturate(1.4) hue-rotate(-15deg) contrast(1.1) brightness(0.95);
+}
+
+/* ===== Region marker for /explore ===== */
+.custom-region-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.region-bubble {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2.5px solid #D2542A;
+  box-shadow: 0 4px 12px rgba(22, 36, 53, 0.18);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.region-bubble:hover {
+  transform: scale(1.15);
+  box-shadow: 0 8px 20px rgba(22, 36, 53, 0.28);
+}
+
+.region-bubble.active {
+  transform: scale(1.25);
+  border-width: 3px;
+  box-shadow:
+    0 0 0 6px rgba(210, 84, 42, 0.18),
+    0 8px 24px rgba(22, 36, 53, 0.3);
+}
+
+.region-bubble-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #D2542A;
+}
+
+.region-bubble.active .region-bubble-dot {
+  background: #D2542A;
+  box-shadow: 0 0 0 3px rgba(210, 84, 42, 0.25);
+}
+
+/* Custom popup (used across maps) */
+.leaflet-popup.custom-popup .leaflet-popup-content-wrapper {
+  background: white;
+  border: 1px solid #EBE0CB;
+}
+
 

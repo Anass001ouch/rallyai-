@@ -30,18 +30,26 @@ export function HeroNavbar() {
           <span className="text-lg sm:text-xl font-display font-black text-white tracking-tight">
             Artouris
           </span>
+          <span className="hidden sm:inline-flex items-center gap-1 ml-0.5 px-1.5 py-0.5 rounded-full bg-tile-green/25 border border-tile-green/40 text-[9px] font-bold text-tile-green uppercase tracking-wider">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tile-green opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-tile-green"></span>
+            </span>
+            Live
+          </span>
         </Link>
 
         {/* Center nav */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-0.5">
           {NAV_LINKS.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="px-3 py-1.5 rounded-full text-[13px] font-bold text-sand-100 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-1"
+              className="group relative px-3 py-1.5 rounded-full text-[13px] font-bold text-sand-100 hover:text-white transition-colors flex items-center gap-1"
             >
               {l.label === "AI Planner" && <Sparkles className="w-3 h-3" />}
               {l.label}
+              <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-300 opacity-0 group-hover:opacity-100 transition-opacity" />
             </Link>
           ))}
         </nav>

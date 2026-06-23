@@ -38,6 +38,63 @@ export function Hero() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-terracotta-500/20 rounded-full blur-[120px]" />
       </div>
 
+      {/* Decorative Moroccan zellige accents in corners (Animated) */}
+      <motion.div 
+        initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ duration: 2 }}
+        className="absolute top-20 left-6 z-[1] hidden lg:block"
+      >
+        <motion.svg animate={{ rotate: 360, y: [0, -10, 0] }} transition={{ rotate: { duration: 120, repeat: Infinity, ease: "linear" }, y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }} viewBox="0 0 80 80" className="w-20 h-20 text-gold-300/60">
+          <g fill="none" stroke="currentColor" strokeWidth="0.6">
+            <path d="M40 6 L70 36 L40 66 L10 36 Z" />
+            <path d="M40 18 L58 36 L40 54 L22 36 Z" />
+            <circle cx="40" cy="36" r="3" fill="currentColor" />
+          </g>
+        </motion.svg>
+      </motion.div>
+      <motion.div 
+        initial={{ opacity: 0 }} animate={{ opacity: 0.3 }} transition={{ duration: 2, delay: 0.5 }}
+        className="absolute bottom-32 right-8 z-[1] hidden lg:block"
+      >
+        <motion.svg animate={{ rotate: -360, y: [0, 15, 0] }} transition={{ rotate: { duration: 150, repeat: Infinity, ease: "linear" }, y: { duration: 8, repeat: Infinity, ease: "easeInOut" } }} viewBox="0 0 80 80" className="w-28 h-28 text-terracotta-300/60">
+          <g fill="none" stroke="currentColor" strokeWidth="0.6">
+            <path d="M40 6 L70 36 L40 66 L10 36 Z" />
+            <path d="M40 18 L58 36 L40 54 L22 36 Z" />
+            <path d="M40 28 L52 36 L40 44 L28 36 Z" />
+            <circle cx="40" cy="36" r="2" fill="currentColor" />
+          </g>
+        </motion.svg>
+      </motion.div>
+      
+      {/* Background drifting orbs */}
+      <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] left-[10%] w-[400px] h-[400px] bg-terracotta-500/10 rounded-full blur-[100px]"
+        />
+        <motion.div
+          animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[10%] right-[15%] w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[120px]"
+        />
+      </div>
+
+      {/* Live pilot floating chip (bottom-left) */}
+      <motion.div
+        initial={{ opacity: 0, x: -8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+        className="absolute bottom-10 left-6 z-30 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sand-100"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tile-green opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-tile-green"></span>
+        </span>
+        <span className="text-[10px] font-bold uppercase tracking-[0.15em]">
+          Morocco · Pilot launching
+        </span>
+      </motion.div>
+
       {/* Floating premium navbar */}
       <HeroNavbar />
 

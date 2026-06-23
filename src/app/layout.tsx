@@ -117,7 +117,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${plusJakarta.variable} ${geistMono.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${plusJakarta.variable} ${geistMono.variable} antialiased bg-background text-foreground font-sans relative`}
       >
         {children}
         <Toaster />

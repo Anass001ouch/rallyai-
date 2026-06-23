@@ -90,38 +90,85 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
       ? mapVisualMarkers
       : mapVisualMarkers.filter(m => m.type === activeFilter);
 
+    const activeFilterMeta = mapFilters.find(f => f.id === activeFilter);
+    const totalCount = mapVisualMarkers.length;
+    const filteredCount = filteredMarkers.length;
+
     return (
       <div className="relative w-full h-full">
-        {/* Map Filter Chips */}
-        <div className="absolute top-4 left-4 right-4 z-[1000] flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {mapFilters.map(f => (
-            <button
-              key={f.id}
-              onClick={() => setActiveFilter(f.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold whitespace-nowrap shadow-md transition-all ${
-                activeFilter === f.id
-                  ? "bg-navy-900 text-white scale-105"
-                  : "bg-white text-navy-700 hover:bg-sand-50 border border-sand-200"
-              }`}
-            >
-              <span>{f.icon}</span>
-              <span>{f.label}</span>
-            </button>
-          ))}
+        {/* Bottom floating dock for filters (macOS style) */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000] max-w-[90vw] transition-all duration-500 hover:-translate-y-1">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar px-3 py-2.5 rounded-[24px] bg-white/80 backdrop-blur-xl border border-white/60 shadow-card-elevated">
+            {mapFilters.map(f => (
+              <button
+                key={f.id}
+                onClick={() => setActiveFilter(f.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[16px] text-xs font-bold whitespace-nowrap transition-all duration-300 ${
+                  activeFilter === f.id
+                    ? "bg-gradient-to-b from-navy-800 to-navy-900 text-white shadow-md transform scale-105 ring-1 ring-white/20"
+                    : "bg-transparent text-navy-700 hover:bg-white/60"
+                }`}
+              >
+                <span className={activeFilter === f.id ? "scale-110 transition-transform" : ""}>{f.icon}</span>
+                <span>{f.label}</span>
+                <span className={`ml-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-black tracking-wider ${
+                  activeFilter === f.id
+                    ? "bg-white/20 text-white"
+                    : "bg-black/5 text-navy-500"
+                }`}>
+                  {f.id === "all" ? totalCount : (mapVisualMarkers.filter(m => m.type === f.id).length)}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Top-left legend */}
+        <div className="absolute top-6 left-6 z-[1000] pointer-events-none max-w-[200px]">
+          <div className="pointer-events-auto rounded-[20px] border border-white/50 bg-white/70 backdrop-blur-xl shadow-card-soft px-4 py-3.5 text-[10px] font-semibold text-navy-800">
+            <p className="text-terracotta-500 font-bold uppercase tracking-[0.2em] text-[8px] mb-2 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-terracotta-500 animate-pulse" /> Live Feed
+            </p>
+            <div className="flex items-center gap-1.5 mb-2">
+              <span
+                className="inline-block w-2.5 h-2.5 rounded-full"
+                style={{ background: activeFilterMeta?.color ?? "#0f172a" }}
+              />
+              <span className="font-bold">{activeFilterMeta?.label ?? "All"}</span>
+              <span className="text-navy-500 font-normal">· {filteredCount}</span>
+            </div>
+            <div className="h-px bg-sand-200 my-1.5" />
+            <p className="text-navy-500 uppercase tracking-wider text-[8px] mb-1">Legend</p>
+            <ul className="space-y-0.5">
+              {mapFilters.filter(f => f.id !== "all").slice(0, 6).map(f => (
+                <li key={f.id} className="flex items-center gap-1.5 text-[10px]">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: f.color }} />
+                  <span className="text-navy-700">{f.icon} {f.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Artouris watermark - top right */}
+        <div className="absolute top-6 right-6 z-[500] pointer-events-none select-none">
+          <div className="px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm text-[10px] font-bold text-navy-800 uppercase tracking-[0.2em] flex items-center gap-1.5">
+            Artouris <span className="text-terracotta-500 font-black">Atlas</span>
+          </div>
         </div>
 
         <MapContainer
           center={[31.0900, -4.0150]}
           zoom={13}
-          className="w-full h-full z-0"
-          zoomControl={false}
+          className="w-full h-full z-0 brand-zoom"
+          zoomControl={true}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> · <a href="https://carto.com/attributions">CARTO</a>'
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           />
 
-          {/* Highlight zones (dunes zone + village zone) */}
+          {/* Highlight zones (animated pulse) */}
           {mapZones.map(zone => (
             <Circle
               key={zone.id}
@@ -133,6 +180,7 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
                 fillOpacity: 0.08,
                 weight: 2,
                 dashArray: "6 4",
+                className: "leaflet-pulse-zone",
               }}
             />
           ))}
@@ -145,6 +193,7 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
               weight: 3,
               opacity: 0.7,
               dashArray: "8 10",
+              className: "animate-route-dash",
             }}
           />
 
@@ -156,19 +205,26 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
               icon={createMapIcon(marker.type, marker.icon)}
             >
               <Popup maxWidth={240} className="custom-popup">
-                <div style={{ width: 220 }}>
+                <div style={{ width: 220, fontFamily: 'inherit' }}>
                   <img
                     src={marker.image}
                     alt={marker.label}
-                    style={{ height: 96, width: '100%', borderRadius: 12, objectFit: 'cover', marginBottom: 8 }}
+                    style={{ height: 110, width: '100%', borderRadius: 12, objectFit: 'cover', marginBottom: 8 }}
                   />
-                  <div style={{ fontWeight: 700, fontSize: 14, color: '#0f172a', marginBottom: 2 }}>{marker.label}</div>
-                  <div style={{ fontSize: 13, color: '#d84f2a', fontWeight: 600, marginBottom: 8 }}>{marker.price}</div>
+                  <div style={{ fontWeight: 800, fontSize: 14, color: '#0f172a', marginBottom: 2, lineHeight: 1.2 }}>
+                    {marker.label}
+                  </div>
+                  <div style={{ fontSize: 11, color: '#6E4D29', fontWeight: 600, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    {marker.type} · Merzouga
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <span style={{ fontSize: 13, color: '#d84f2a', fontWeight: 800 }}>{marker.price}</span>
+                    <span style={{ fontSize: 10, color: '#16a34a', fontWeight: 700 }}>★ 4.8</span>
+                  </div>
                   <div style={{
-                    display: 'inline-block',
-                    background: '#0f172a',
+                    background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
                     color: 'white',
-                    padding: '6px 14px',
+                    padding: '8px 14px',
                     borderRadius: 8,
                     fontSize: 12,
                     fontWeight: 700,
@@ -176,13 +232,23 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
                     width: '100%',
                     textAlign: 'center',
                   }}>
-                    View details
+                    View details →
                   </div>
                 </div>
               </Popup>
             </Marker>
           ))}
         </MapContainer>
+
+        {/* Subtle Moroccan overlay for visual depth */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[400] mix-blend-multiply opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 30% 30%, rgba(210, 84, 42, 0.6) 0%, transparent 35%), radial-gradient(circle at 70% 70%, rgba(47, 93, 84, 0.4) 0%, transparent 35%)",
+          }}
+        />
       </div>
     );
   }
@@ -207,9 +273,9 @@ export default function Map({ markers, mode = "planner" }: MapProps) {
   const { handleSelection, hoveredItemId } = useTravelPlannerStore();
 
   return (
-    <MapContainer center={center} zoom={zoom} className="w-full h-full rounded-xl shadow-lg border border-border z-0 relative">
+    <MapContainer center={center} zoom={zoom} className="w-full h-full rounded-xl shadow-lg border border-border z-0 relative brand-zoom">
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> · <a href="https://carto.com/attributions">CARTO</a>'
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
       />
       <LocationUpdater center={center} zoom={zoom} hoveredItemId={hoveredItemId} markers={markersToUse} />
